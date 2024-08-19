@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[TEST]
+ALTER PROCEDURE [dbo].[TEST]
 
 AS
 
