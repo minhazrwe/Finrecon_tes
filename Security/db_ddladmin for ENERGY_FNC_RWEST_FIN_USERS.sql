@@ -1,0 +1,5 @@
+ALTER ROLE [db_ddladmin] ADD MEMBER [ENERGY\FNC_RWEST_FIN_USERS];
+
+
+GO
+

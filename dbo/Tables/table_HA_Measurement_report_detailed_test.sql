@@ -1,0 +1,43 @@
+CREATE TABLE [dbo].[table_HA_Measurement_report_detailed_test] (
+    [Valuation_DATE]      NVARCHAR (100) NULL,
+    [Sub]                 NVARCHAR (100) NULL,
+    [Strategy]            NVARCHAR (100) NULL,
+    [Book]                NVARCHAR (100) NULL,
+    [Der_Item]            NVARCHAR (100) NULL,
+    [Deal_REF_ID]         NVARCHAR (100) NULL,
+    [Deal_ID]             NVARCHAR (100) NULL,
+    [Rel_ID]              NVARCHAR (100) NULL,
+    [DeDesig_Rel_ID]      NVARCHAR (100) NULL,
+    [Rel_TYPE]            NVARCHAR (100) NULL,
+    [Counterparty]        NVARCHAR (100) NULL,
+    [Deal_DATE]           NVARCHAR (100) NULL,
+    [Rel_Eff_DATE]        NVARCHAR (100) NULL,
+    [DeDesig_DATE]        NVARCHAR (100) NULL,
+    [Term]                NVARCHAR (100) NULL,
+    [Column_16]           NVARCHAR (100) NULL,
+    [Total_Volume]        NVARCHAR (100) NULL,
+    [Volume_Used]         NVARCHAR (100) NULL,
+    [UOM]                 NVARCHAR (50)  NULL,
+    [INDEX_name]          NVARCHAR (100) NULL,
+    [DF]                  NVARCHAR (100) NULL,
+    [Deal_Price]          NVARCHAR (100) NULL,
+    [Market_Price]        NVARCHAR (100) NULL,
+    [Inception_Price]     NVARCHAR (100) NULL,
+    [ccy]                 NVARCHAR (100) NULL,
+    [Cum_FV]              NVARCHAR (100) NULL,
+    [Cum_INT_FV]          NVARCHAR (100) NULL,
+    [Incpt_FV]            NVARCHAR (100) NULL,
+    [Incpt_INT_FV]        NVARCHAR (100) NULL,
+    [Cum_Hedge_FV]        NVARCHAR (100) NULL,
+    [Hedge_AOCI_Ratio]    NVARCHAR (100) NULL,
+    [Dollar_Offset_Ratio] NVARCHAR (100) NULL,
+    [Test]                NVARCHAR (100) NULL,
+    [AOCI]                NVARCHAR (100) NULL,
+    [PNL]                 NVARCHAR (100) NULL,
+    [AOCI_Released]       NVARCHAR (100) NULL,
+    [PNL_Settled]         NVARCHAR (100) NULL
+);
+
+
+GO
+

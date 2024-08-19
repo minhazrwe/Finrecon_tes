@@ -1,0 +1,5 @@
+ALTER ROLE [db_datawriter] ADD MEMBER [GROUP\R916579];
+
+
+GO
+

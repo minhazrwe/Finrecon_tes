@@ -1,0 +1,5 @@
+ALTER ROLE [db_datareader] ADD MEMBER [ENERGY\FNC_RWEST_FIN_USERS];
+
+
+GO
+

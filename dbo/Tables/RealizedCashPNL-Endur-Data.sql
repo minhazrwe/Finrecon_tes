@@ -1,0 +1,40 @@
+CREATE TABLE [dbo].[RealizedCashPNL-Endur-Data] (
+    [Deal Num]               VARCHAR (300) NULL,
+    [Reference]              VARCHAR (300) NULL,
+    [Tran Status]            VARCHAR (300) NULL,
+    [Toolset]                VARCHAR (300) NULL,
+    [Instrument Type]        VARCHAR (300) NULL,
+    [Internal Legal Entity]  VARCHAR (300) NULL,
+    [Internal Business Unit] VARCHAR (300) NULL,
+    [Internal Pf Id]         VARCHAR (300) NULL,
+    [Internal Portfolio]     VARCHAR (300) NULL,
+    [External Legal Entity]  VARCHAR (300) NULL,
+    [External Business Unit] VARCHAR (300) NULL,
+    [External Portfolio]     VARCHAR (300) NULL,
+    [Ticker]                 VARCHAR (300) NULL,
+    [Projection Index]       VARCHAR (300) NULL,
+    [Index Group]            VARCHAR (300) NULL,
+    [Currency]               VARCHAR (300) NULL,
+    [Buy Sell]               VARCHAR (300) NULL,
+    [Volume]                 VARCHAR (300) NULL,
+    [Unit]                   VARCHAR (300) NULL,
+    [Trade Price]            VARCHAR (300) NULL,
+    [Document Number]        VARCHAR (300) NULL,
+    [Event Date]             VARCHAR (300) NULL,
+    [Trade Date]             VARCHAR (300) NULL,
+    [Delivery Month]         VARCHAR (300) NULL,
+    [Exercise Date]          VARCHAR (300) NULL,
+    [Realized PnL]           VARCHAR (300) NULL,
+    [Realized Base PnL]      VARCHAR (300) NULL,
+    [Cash Flow Type]         VARCHAR (300) NULL,
+    [FX Rate]                VARCHAR (300) NULL,
+    [Pipeline]               VARCHAR (300) NULL,
+    [Zone]                   VARCHAR (300) NULL,
+    [Power Region]           VARCHAR (300) NULL,
+    [Instrument Sub Type]    VARCHAR (300) NULL,
+    [FileId]                 INT           NULL
+);
+
+
+GO
+

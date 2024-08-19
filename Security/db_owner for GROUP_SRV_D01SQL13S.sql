@@ -1,0 +1,5 @@
+ALTER ROLE [db_owner] ADD MEMBER [GROUP\SRV_D01SQL13S];
+
+
+GO
+

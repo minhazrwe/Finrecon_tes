@@ -1,0 +1,5 @@
+CREATE USER [ENERGY\RES_SQL_ServerAdmins] FOR LOGIN [ENERGY\RES_SQL_ServerAdmins];
+
+
+GO
+

@@ -1,0 +1,41 @@
+CREATE TABLE [dbo].[table_Clearer_BIM_preparation_Helper] (
+    [ID]                        INT             IDENTITY (1, 1) NOT NULL,
+    [Position]                  VARCHAR (50)    NULL,
+    [BS]                        VARCHAR (50)    NULL,
+    [Konto]                     NVARCHAR (100)  NULL,
+    [Auftrag]                   VARCHAR (50)    NULL,
+    [Zuordnung]                 NVARCHAR (4000) NULL,
+    [BetragFW]                  FLOAT (53)      NULL,
+    [BuchungsText]              NVARCHAR (4000) NULL,
+    [StKz]                      NVARCHAR (100)  NULL,
+    [BuKr]                      NVARCHAR (10)   NULL,
+    [Debitor]                   INT             NULL,
+    [MaterialCode]              NVARCHAR (100)  NULL,
+    [Kostenstelle]              VARCHAR (50)    NULL,
+    [LegalEntity]               VARCHAR (50)    NULL,
+    [InternalPortfolio]         NVARCHAR (200)  NULL,
+    [Category]                  NVARCHAR (100)  NULL,
+    [CCY]                       NVARCHAR (200)  NULL,
+    [PayReceive]                VARCHAR (10)    NULL,
+    [realisedPNL]               FLOAT (53)      NULL,
+    [AccountName]               NVARCHAR (200)  NULL,
+    [ProjectionIndex1]          NVARCHAR (200)  NULL,
+    [Toolset]                   NVARCHAR (200)  NULL,
+    [SettlementDate]            DATE            NULL,
+    [ContractDate]              DATE            NULL,
+    [ContractName]              NVARCHAR (200)  NULL,
+    [ProductName]               NVARCHAR (200)  NULL,
+    [Commodity]                 NVARCHAR (50)   NULL,
+    [DealID]                    NVARCHAR (20)   NULL,
+    [DocumentPartition]         INT             NULL,
+    [ClearerID]                 INT             NULL,
+    [ClearerSpotBalanceAccount] NVARCHAR (200)  NULL,
+    [Clearername]               NVARCHAR (200)  NULL,
+    [ClearerCountry]            NVARCHAR (200)  NULL,
+    [COB]                       DATE            NULL,
+    [SRC]                       INT             NULL
+);
+
+
+GO
+

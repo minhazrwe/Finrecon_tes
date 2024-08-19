@@ -1,0 +1,5 @@
+ALTER ROLE [db_datareader] ADD MEMBER [GROUP\SRV_RWEST_BMC_ADDM2];
+
+
+GO
+

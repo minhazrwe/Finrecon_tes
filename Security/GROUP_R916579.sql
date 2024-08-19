@@ -1,0 +1,5 @@
+CREATE USER [GROUP\R916579];
+
+
+GO
+

@@ -1,0 +1,11 @@
+CREATE ROLE [AppSupport]
+    AUTHORIZATION [dbo];
+
+
+GO
+
+ALTER ROLE [AppSupport] ADD MEMBER [GROUP\FNC_RWEST_FIN_SUPPORT];
+
+
+GO
+

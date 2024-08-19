@@ -1,0 +1,184 @@
+
+
+
+
+
+
+
+
+
+
+
+/*changes:
+YYYY-MM-DD: Comment
+--2024-08/
+*/
+CREATE VIEW [dbo].[Recon_Diff_US]
+AS
+SELECT e.CompanyCode
+	,InternalLegalEntity
+	,Desk
+	--Subdesk,
+	,ReconGroup
+	,[dbo].[recon].[OrderNo]
+	,DeliveryMonth
+	,DealID_Recon
+	,Account
+	,ccy
+	,Portfolio
+	,CounterpartyGroup
+	,InstrumentType
+	,CashflowType
+	,ProjIndexGroup
+	,CurveName
+	,ExternalLegal
+	,ltrim(rtrim(ExternalBusinessUnit)) AS ExternalBusinessUnit
+	,ExternalPortfolio
+	,DocumentNumber
+	,Reference
+	,CASE
+		WHEN dbo.recon.Partner IS NULL
+			THEN '/'
+		ELSE dbo.recon.Partner
+		END AS partner
+	,[Ref3] + CASE
+		WHEN [recongroup] IN (
+				'Physical Gas'
+				,'Swaps'
+				)
+			THEN ';GAS;'
+		ELSE ';PWR;'
+		END + CASE
+		WHEN c.[ctpygroup] = 'Internal'
+			THEN 'INT'
+		ELSE 'EXT'
+		END AS RefFeld3
+	,CASE
+		WHEN len(day(TradeDate)) = 1
+			THEN '0' + convert(VARCHAR, day(TradeDate))
+		ELSE convert(VARCHAR, day(TradeDate))
+		END + '.' + CASE
+		WHEN len(month(TradeDate)) = 1
+			THEN '0' + convert(VARCHAR, month(TradeDate))
+		ELSE convert(VARCHAR, month(TradeDate))
+		END + '.' + convert(VARCHAR, year(TradeDate)) AS TradeDate
+	,CASE
+		WHEN len(day(EventDate)) = 1
+			THEN '0' + convert(VARCHAR, day(EventDate))
+		ELSE convert(VARCHAR, day(EventDate))
+		END + '.' + CASE
+		WHEN len(month(EventDate)) = 1
+			THEN '0' + convert(VARCHAR, month(EventDate))
+		ELSE convert(VARCHAR, month(EventDate))
+		END + '.' + convert(VARCHAR, year(EventDate)) AS EventDate
+	,SAP_DocumentNumber
+	,Volume_Endur
+	,Volume_SAP
+	,Volume_Adj
+	,UOM_Endur
+	,UOM_SAP
+	,realised_ccy_Endur
+	,realised_ccy_SAP
+	,realised_ccy_adj
+	,realised_EUR_Endur
+	,realised_EUR_SAP
+	,realised_EUR_adj
+	,Account_Endur
+	,Account_SAP
+	,round(Diff_Volume, 3) AS Diff_Volume
+	,round(Diff_Realised_CCY, 2) AS Diff_CCY
+	,round(Diff_Realised_DeskCCY, 2) AS Diff_DeskCCY
+	,round(Diff_Realised_EUR, 2) AS Diff_EUR
+	,Round(Abs([diff_realised_EUR]), 2) AS abs_diff_EUR
+	,CASE
+		WHEN eventdate > (
+				SELECT [asofdate_eom]
+				FROM dbo.asofdate
+				)
+			THEN 'future payment date'
+		ELSE ''
+		END AS PaymentDateInfo
+	,CASE
+		WHEN e.CompanyCode = '6204' THEN		
+			IIF([DealID_Recon] IS NULL, '', [DealID_Recon])	+ '; ' + IIF([VAT_CountryCode] IS NULL, '', [VAT_CountryCode]) + '; ' + IIF([ExternalLegal] IS NULL, '', [ExternalLegal]) + '; ' + IIF([DeliveryMonth] IS NULL, '', [DeliveryMonth]) + ', Accrual'
+		ELSE
+			'Rev Est ' + IIF([InstrumentType] IS NULL, '', replace([InstrumentType], '-STD', '')) + ';' + IIF([VAT_CountryCode] IS NULL, '', [VAT_CountryCode]) + ';' + IIF([ExternalBusinessUnit] IS NULL, '', [ExternalBusinessUnit])+ ';' + IIF([DeliveryMonth] IS NULL, '', [DeliveryMonth])
+	END AS AccrualPostingText
+	,VAT_CountryCode AS CountryCode
+	,CASE
+		WHEN [diff_realised_ccy] > 0 THEN '50'
+		WHEN [diff_realised_ccy] < 0 THEN '40'
+		WHEN [diff_realised_ccy] = 0 AND [diff_volume] < 0 THEN '40'
+		ELSE '50'
+	END AS [BS_GUV]
+	,[account] AS [Konto_GUV]
+	,CASE
+		WHEN [diff_realised_ccy] > 0 THEN '40'
+		WHEN [diff_realised_ccy] < 0 THEN '50'
+		WHEN [diff_realised_ccy] = 0 AND [diff_volume] < 0 THEN '50'
+		ELSE '40'
+	END AS [BS_Bilanz]
+	,CASE
+		WHEN CounterpartyGroup = 'External' THEN
+			CASE
+				WHEN [diff_realised_ccy] > 0 THEN '1121500700'
+				WHEN [diff_realised_ccy] < 0 THEN '3135406000'
+				WHEN [diff_realised_ccy] = 0 AND [diff_volume] < 0 THEN '3135406000'
+				ELSE '1121500700'
+			END
+		ELSE
+			CASE
+				WHEN [diff_realised_ccy] > 0 THEN '1124110000'
+				WHEN [diff_realised_ccy] < 0 THEN '3137100000'
+				WHEN [diff_realised_ccy] = 0 AND [diff_volume] < 0 THEN '3137100000'
+				ELSE '1124110000'
+			END
+	END AS [Konto_Bilanz]
+	,CASE
+		WHEN d.UstID IS NULL
+			THEN '/'
+		ELSE d.ustid
+		END AS UStID
+	,Recon.VAT_CountryCode
+	,Identifier
+FROM (
+	(
+		(
+			dbo.Recon LEFT JOIN (
+				SELECT OrderNo
+					,Max(Ref3) AS Ref3
+				FROM dbo.map_order
+				GROUP BY OrderNo
+				) AS r ON dbo.Recon.orderno = r.orderno
+			) LEFT JOIN (
+			SELECT partner
+				,max(ctpygroup) AS ctpygroup
+			FROM dbo.map_counterparty
+			GROUP BY partner
+			) AS c ON dbo.Recon.partner = c.partner
+		) LEFT JOIN dbo.map_counterparty AS d ON dbo.Recon.externalbusinessunit = d.extbunit
+	)
+LEFT JOIN (
+	SELECT DISTINCT CompanyCode
+		,LegalEntity
+	FROM [dbo].[map_counterparty]
+	) AS e ON InternalLegalEntity = e.LegalEntity
+WHERE [Desk] IN (
+		'CAO US', 'ASHWOOD SOLAR', 'ANACACHO WIND FARM', 'BARON WINDS', 'BIG STAR SOLAR', 'BLACKJACK CREEK WIND FARM', 'BOILING SPRINGS', 'BRIGHT ARROW SOLAR', 'BRUENNINGS BREEZE WIND FARM', 'CASSADAGA WIND', 'CHAMPION WIND FARM', 'COLBECKS CORNER', 'CONRAD SOLAR', 'CRANELL WIND FARM', 'EL ALGODON ALTO WIND FARM', 'FIFTH STANDARD SOLAR PV', 'FOREST CREEK', 'GRANDVIEW WIND FARM', 'HARDIN_WIND', 'INADALE WIND FARM', 'LANE CITY WIND FARM', 'MAGIC VALLEY WIND FARM I', 'MONTGOMERY RANCH WIND FARM', 'MUNNSVILLE WIND FARM', 'NORTHERN ORCHARD SOLAR', 'OPERATIONS AMERICA', 'PANTHER CREEK I&II', 'PANTHER CREEK WIND FARM III', 'PAPALOTE CREEK II', 'PAPALOTE WIND FARM I', 'PEYTON CREEK WIND FARM', 'PIONEER TRAIL WIND FARM', 'PYRON WIND FARM', 'QUARTZ SOLAR', 'RADFORDS RUN WIND FARM', 'RAYMOND WIND FARM', 'ROSCOE WIND FARM', 'SAND BLUFF WIND FARM', 'SETTLERS TRAIL', 'STELLA WIND FARM', 'STILLWATER BESS', 'STONERIDGE SOLAR', 'STONY CREEK', 'TABER SOLAR 1', 'TABER SOLAR 2', 'TAMWORTH HOLDINGS', 'TANAGER HOLDINGS', 'TECH PARK SOLAR', 'VALENCIA SOLAR', 'VENTASSO', 
+		'WEST OF THE PECOS SOLAR', 'WEST RAYMOND WIND FARM', 'WILDCAT WIND FARM I', 'WILLOWBROOK SOLAR 1', 'WR GRACELAND SOLAR', 'Hickory Park Solar, LLC'
+		)
+	AND [ExternalBusinessUnit] NOT IN (
+		'ANACACHO WIND FARM BU', 'ANACACHO WIND FARM EAP BU', 'ASHWOOD SOLAR I BU', 'ASHWOOD SOLAR I EAP BU', 'BARON WINDS BU', 'BARON WINDS EAP BU', 'BIG STAR SOLAR BU', 'BIG STAR SOLAR EAP BU', 'BLACKJACK CREEK WIND FARM BU', 'BLACKJACK CREEK WIND FARM EAP BU', 'BOILING SPRINGS BU', 'BOILING SPRINGS EAP BU', 'BRIGHT ARROW SOLAR BU', 'BRIGHT ARROW SOLAR EAP BU', 'BRUENNINGS BREEZE WIND FARM BU', 'BRUENNINGS BREEZE WIND FARM EAP BU', 'CAO US AESO ASSET CAP BU', 'CAO US AESO CONGESTION BU', 'CAO US AESO EAP BU', 'CAO US AESO HEDGE CAP BU', 'CAO US AESO RHP BU', 'CAO US AESO THP BU', 'CAO US CAISO ASSET CAP BU', 'CAO US CAISO CONGESTION BU', 'CAO US CAISO EAP BU', 'CAO US CAISO HEDGE CAP BU', 'CAO US CAISO RHP BU', 'CAO US CAISO THP BU', 'CAO US ERCOT ASSET BU', 'CAO US ERCOT ASSET CAP BU', 'CAO US ERCOT CONGESTION BU', 'CAO US ERCOT EAP BU', 'CAO US ERCOT HEDGE CAP BU', 'CAO US ERCOT MGMT BU', 'CAO US ERCOT PPA BU', 'CAO US ERCOT RHP BU', 'CAO US ERCOT THP BU', 'CAO US MISO ASSET BU', 'CAO US MISO ASSET CAP BU', 
+		'CAO US MISO CONGESTION BU', 'CAO US MISO EAP BU', 'CAO US MISO HEDGE CAP BU', 'CAO US MISO PPA BU', 'CAO US MISO RHP BU', 'CAO US MISO THP BU', 'CAO US NEISO ASSET CAP BU', 'CAO US NEISO CONGESTION BU', 'CAO US NEISO EAP BU', 'CAO US NEISO HEDGE CAP BU', 'CAO US NEISO RHP BU', 'CAO US NEISO THP BU', 'CAO US NON ISO ASSET CAP BU', 'CAO US NON ISO CONGESTION BU', 'CAO US NON ISO EAP BU', 'CAO US NON ISO HEDGE CAP BU', 'CAO US NON ISO RHP BU', 'CAO US NON ISO THP BU', 'CAO US NYISO ASSET CAP BU', 'CAO US NYISO CONGESTION BU', 'CAO US NYISO EAP BU', 'CAO US NYISO HEDGE CAP BU', 'CAO US NYISO RHP BU', 'CAO US NYISO THP BU', 'CAO US PJM ASSET BU', 'CAO US PJM ASSET CAP BU', 'CAO US PJM CONGESTION BU', 'CAO US PJM EAP BU', 'CAO US PJM HEDGE CAP BU', 'CAO US PJM PPA BU', 'CAO US PJM RHP BU', 'CAO US PJM THP BU', 'CAO US SPP ASSET BU', 'CAO US SPP ASSET CAP BU', 'CAO US SPP CONGESTION BU', 'CAO US SPP EAP BU', 'CAO US SPP HEDGE CAP BU', 'CAO US SPP RHP BU', 'CAO US SPP THP BU', 'CAO US THP DUMMY BU', 'CASSADAGA WIND BU', 
+		'CASSADAGA WIND EAP BU', 'CHAMPION WIND FARM BU', 'CHAMPION WIND FARM EAP BU', 'COLBECKS CORNER BU', 'COLBECKS CORNER EAP BU', 'CONRAD SOLAR BU', 'CONRAD SOLAR EAP BU', 'CRANELL WIND FARM BU', 'CRANELL WIND FARM EAP BU', 'EL ALGODON ALTO WIND FARM BU', 'EL ALGODON ALTO WIND FARM EAP BU', 'FIFTH STANDARD SOLAR PV BU', 'FIFTH STANDARD SOLAR PV EAP BU', 'FOREST CREEK BU', 'FOREST CREEK EAP BU', 'GRANDVIEW WIND FARM BU', 'GRANDVIEW WIND FARM EAP BU', 'HARDIN WIND BU', 'HARDIN WIND EAP BU', 'HICKORY PARK SOLAR BU', 'HICKORY PARK SOLAR EAP BU', 'INADALE WIND FARM BU', 'INADALE WIND FARM EAP BU', 'MAGIC VALLEY WIND FARM I BU', 'MAGIC VALLEY WIND FARM I EAP BU', 'MONTGOMERY RANCH WIND FARM BU', 'MONTGOMERY RANCH WIND FARM EAP BU', 'MUNNSVILLE WIND FARM BU', 'MUNNSVILLE WIND FARM EAP BU', 'PANTHER CREEK I&II EAP BU', 'PANTHER CREEK II BU', 'PANTHER CREEK WIND FARM III BU', 'PANTHER CREEK WIND FARM III EAP BU', 'PAPALOTE CREEK II BU', 'PAPALOTE CREEK II EAP BU', 'PAPALOTE WIND FARM I BU', 'PAPALOTE WIND FARM I EAP BU', 
+		'PEYTON CREEK WIND FARM BU', 'PEYTON CREEK WIND FARM EAP BU', 'PIONEER TRAIL WIND FARM BU', 'PIONEER TRAIL WIND FARM EAP BU', 'PYRON WIND FARM BU', 'PYRON WIND FARM EAP BU', 'RADFORDS RUN WIND FARM BU', 'RADFORDS RUN WIND FARM EAP BU', 'RAYMOND WIND FARM BU', 'RAYMOND WIND FARM EAP BU', 'ROSCOE WIND FARM BU', 'ROSCOE WIND FARM EAP BU', 'SAND BLUFF WIND FARM BU', 'SAND BLUFF WIND FARM EAP BU', 'SETTLERS TRAIL BU', 'SETTLERS TRAIL EAP BU', 'STELLA WIND FARM BU', 'STELLA WIND FARM EAP BU', 'STONY CREEK BU', 'STONY CREEK EAP BU', 'TABER SOLAR 1 BU', 'TABER SOLAR 1 EAP BU', 'TABER SOLAR 2 BU', 'TABER SOLAR 2 EAP BU', 'TAMWORTH HOLDINGS BU', 'TAMWORTH HOLDINGS EAP BU', 'TANAGER HOLDINGS BU', 'TANAGER HOLDINGS EAP BU', 'TECH PARK SOLAR BU', 'TECH PARK SOLAR EAP BU', 'VALENCIA SOLAR BU', 'VALENCIA SOLAR EAP BU', 'WEST OF THE PECOS SOLAR BU', 'WEST OF THE PECOS SOLAR EAP BU', 'WEST RAYMOND WIND FARM BU', 'WEST RAYMOND WIND FARM EAP BU', 'WILDCAT WIND FARM I BU', 'WILDCAT WIND FARM I EAP BU', 'WILLOWBROOK SOLAR 1 BU', 
+		'WILLOWBROOK SOLAR 1 EAP BU', 'WR GRACELAND SOLAR BU', 'WR GRACELAND SOLAR EAP BU','CAISO BU','MISO BU','NYISO BU','NEISO BU'
+		)
+	AND ([ExternalPortfolio] NOT LIKE 'zDontUse_%' OR [ExternalPortfolio] IS NULL)
+	AND [InternalLegalEntity] NOT IN ('RWEST DE')
+	AND ((CounterpartyGroup = ExternalLegal AND ExternalBusinessUnit LIKE '%asset%') OR CounterpartyGroup <> ExternalLegal OR CounterpartyGroup IS NULL)
+	AND (CounterpartyGroup <> 'Intradesk' OR CounterpartyGroup IS NULL)
+	AND NOT (InstrumentType = 'PWR-SWAP-F' AND ExternalBusinessUnit = 'ERCOT BU')
+
+GO
+

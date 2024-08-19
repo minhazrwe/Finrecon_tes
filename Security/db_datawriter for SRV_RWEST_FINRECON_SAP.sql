@@ -1,0 +1,5 @@
+ALTER ROLE [db_datawriter] ADD MEMBER [SRV_RWEST_FINRECON_SAP];
+
+
+GO
+

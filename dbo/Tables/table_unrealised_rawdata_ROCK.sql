@@ -1,0 +1,43 @@
+CREATE TABLE [dbo].[table_unrealised_rawdata_ROCK] (
+    [COB]                      DATE             NULL,
+    [DESK_ID]                  NUMERIC (38)     NULL,
+    [DESK_NAME]                VARCHAR (255)    NULL,
+    [DESK_CURRENCY]            VARCHAR (255)    NULL,
+    [BOOK_ID]                  NUMERIC (38)     NULL,
+    [BOOK_NAME]                VARCHAR (255)    NULL,
+    [PORTFOLIO_ID]             NUMERIC (38)     NULL,
+    [PORTFOLIO_NAME]           VARCHAR (255)    NULL,
+    [CASHFLOW_CURRENCY]        VARCHAR (255)    NULL,
+    [INT_LEGAL_ENTITY_NAME]    VARCHAR (255)    NULL,
+    [EXTERNAL_PORTFOLIO_NAME]  VARCHAR (255)    NULL,
+    [EXT_BUSINESS_UNIT_NAME]   VARCHAR (255)    NULL,
+    [EXT_LEGAL_ENTITY_NAME]    VARCHAR (255)    NULL,
+    [PROJECTION_INDEX_NAME]    VARCHAR (255)    NULL,
+    [INDEX_UNIT_NAME]          VARCHAR (255)    NULL,
+    [INDEX_GROUP_NAME]         VARCHAR (255)    NULL,
+    [DEAL_NUMBER]              NUMERIC (38)     NULL,
+    [DEAL_PDC_START_DATE]      DATE             NULL,
+    [DEAL_PDC_END_DATE]        DATE             NULL,
+    [TRADE_DATE]               DATE             NULL,
+    [TRADE_PRICE]              NUMERIC (36, 18) NULL,
+    [INSTRUMENT_TYPE_NAME]     VARCHAR (255)    NULL,
+    [CASHFLOW_TYPE_ID]         NUMERIC (38)     NULL,
+    [CASHFLOW_TYPE]            VARCHAR (255)    NULL,
+    [CASHFLOW_PAYMENT_DATE]    DATE             NULL,
+    [CASHFLOW_PAYMENT_MONTH]   DATE             NULL,
+    [BUY_SELL_NAME]            VARCHAR (255)    NULL,
+    [CONTRACT_NAME]            VARCHAR (255)    NULL,
+    [PRODUCT_NAME]             VARCHAR (255)    NULL,
+    [INTERNAL_ORDER_ID]        VARCHAR (255)    NULL,
+    [DELIVERY_DATE]            DATE             NULL,
+    [DELIVERY_MONTH]           DATE             NULL,
+    [VOLUME]                   NUMERIC (36, 18) NULL,
+    [UNREAL_DISC_PH_BL_CCY]    NUMERIC (36, 18) NULL,
+    [REAL_DISC_PH_BL_CCY]      NUMERIC (36, 18) NULL,
+    [UNREAL_DISC_CASHFLOW_CCY] NUMERIC (36, 18) NULL,
+    [REAL_DISC_CASHFLOW_CCY]   NUMERIC (36, 18) NULL
+);
+
+
+GO
+

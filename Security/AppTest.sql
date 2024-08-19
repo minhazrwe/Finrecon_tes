@@ -1,0 +1,6 @@
+CREATE ROLE [AppTest]
+    AUTHORIZATION [dbo];
+
+
+GO
+

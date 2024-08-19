@@ -1,0 +1,42 @@
+CREATE TABLE [dbo].[table_unrealised_rawdata_STROLF] (
+    [COB]                 DATE          NOT NULL,
+    [REGION]              VARCHAR (4)   NOT NULL,
+    [DESK]                VARCHAR (75)  NOT NULL,
+    [DESK_CCY]            VARCHAR (3)   NOT NULL,
+    [PORTFOLIO_NAME]      VARCHAR (75)  NOT NULL,
+    [PORTFOLIO_ID]        NUMERIC (38)  NOT NULL,
+    [BUY_SELL]            VARCHAR (10)  NOT NULL,
+    [TRADE_DATE]          DATE          NOT NULL,
+    [DEAL_NUM]            NUMERIC (38)  NOT NULL,
+    [REALISATION_DATE]    DATE          NOT NULL,
+    [REAL_DATE_ORIG]      DATE          NOT NULL,
+    [START_DATE]          DATE          NOT NULL,
+    [END_DATE]            DATE          NOT NULL,
+    [LAST_UPDATE]         DATE          NOT NULL,
+    [OFFSET]              NUMERIC (9)   NOT NULL,
+    [PNL_TYPE_RISK]       VARCHAR (10)  NOT NULL,
+    [PNL_TYPE]            VARCHAR (10)  NOT NULL,
+    [PNL_TYPE_ORIG]       VARCHAR (10)  NOT NULL,
+    [INS_TYPE_NAME]       VARCHAR (50)  NOT NULL,
+    [EXT_BUNIT_NAME]      VARCHAR (50)  NOT NULL,
+    [EXT_LENTITY_NAME]    VARCHAR (50)  NOT NULL,
+    [EXT_PORTFOLIO_NAME]  VARCHAR (50)  NULL,
+    [REFERENCE]           VARCHAR (250) NULL,
+    [INS_REFERENCE]       VARCHAR (50)  NULL,
+    [TYPE]                VARCHAR (20)  NOT NULL,
+    [SUBTYPE]             VARCHAR (20)  NOT NULL,
+    [LEG_UNIT]            VARCHAR (20)  NOT NULL,
+    [LEG_CURRENCY]        VARCHAR (3)   NOT NULL,
+    [COMMODITY_TYPE]      VARCHAR (50)  NOT NULL,
+    [INDEX_NAME]          VARCHAR (50)  NOT NULL,
+    [FIXED_PRICE]         FLOAT (53)    NULL,
+    [CFLOW_TYPE]          NUMERIC (38)  NOT NULL,
+    [DEAL_VOLUME]         FLOAT (53)    NULL,
+    [PNL]                 FLOAT (53)    NULL,
+    [UNDISC_PNL]          FLOAT (53)    NULL,
+    [UNDISC_PNL_ORIG_CCY] FLOAT (53)    NULL
+);
+
+
+GO
+

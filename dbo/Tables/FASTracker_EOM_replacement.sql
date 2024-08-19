@@ -1,0 +1,42 @@
+CREATE TABLE [dbo].[FASTracker_EOM_replacement] (
+    [Desk]                 VARCHAR (50)  NULL,
+    [Subdesk]              VARCHAR (255) NULL,
+    [SubDeskCCY]           VARCHAR (3)   NULL,
+    [AsofDate]             DATETIME      NULL,
+    [Sub ID]               INT           NULL,
+    [Subsidiary]           VARCHAR (255) NULL,
+    [Strategy]             VARCHAR (255) NULL,
+    [Book]                 VARCHAR (255) NULL,
+    [AccountingTreatment]  VARCHAR (255) NULL,
+    [InternalPortfolio]    VARCHAR (50)  NULL,
+    [ExternalBusinessUnit] VARCHAR (50)  NULL,
+    [ExtLegalEntity]       VARCHAR (50)  NULL,
+    [ExtPortfolio]         VARCHAR (50)  NULL,
+    [CounterpartyGroup]    VARCHAR (50)  NULL,
+    [InstrumentType]       VARCHAR (50)  NULL,
+    [ProjIndexGroup]       VARCHAR (50)  NULL,
+    [CurveName]            VARCHAR (50)  NULL,
+    [Product]              VARCHAR (50)  NULL,
+    [ReferenceID]          VARCHAR (50)  NULL,
+    [TradeDate]            DATETIME      NULL,
+    [TermEnd]              DATETIME      NULL,
+    [Total_MTM]            FLOAT (53)    NULL,
+    [PNL]                  FLOAT (53)    NULL,
+    [OCI]                  FLOAT (53)    NULL,
+    [OU]                   FLOAT (53)    NULL,
+    [NOR]                  FLOAT (53)    NULL,
+    [UOM]                  VARCHAR (50)  NULL,
+    [Volume]               FLOAT (53)    NULL,
+    [VolumeAvailable]      FLOAT (53)    NULL,
+    [VolumeUsed]           FLOAT (53)    NULL,
+    [DeskCCY]              VARCHAR (3)   NULL,
+    [Total_MTM_DeskCCY]    FLOAT (53)    NULL,
+    [PNL_DeskCCY]          FLOAT (53)    NULL,
+    [OCI_DeskCCY]          FLOAT (53)    NULL,
+    [OU_DeskCCY]           FLOAT (53)    NULL,
+    [NOR_DeskCCY]          FLOAT (53)    NULL
+);
+
+
+GO
+

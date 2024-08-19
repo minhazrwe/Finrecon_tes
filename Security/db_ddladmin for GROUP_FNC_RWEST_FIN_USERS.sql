@@ -1,0 +1,5 @@
+ALTER ROLE [db_ddladmin] ADD MEMBER [GROUP\FNC_RWEST_FIN_USERS];
+
+
+GO
+
