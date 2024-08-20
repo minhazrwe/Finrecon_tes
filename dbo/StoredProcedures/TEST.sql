@@ -12,3 +12,4 @@ INSERT INTO [FinRecon].[dbo].[TEST1] -- HIADKJAJ
 GO
 
 -- A new change by Minhaz
+--NEW CHANGED
