@@ -5,7 +5,7 @@ AS
 
 
 INSERT INTO [FinRecon].[dbo].[TEST1] -- HIADKJAJ
-           ([Test])
+           ([Test]) -- new changed 3
      VALUES
            (1)
 
